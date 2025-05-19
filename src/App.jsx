@@ -4,12 +4,14 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import { Tween, Easing, update as tweenUpdate } from '@tweenjs/tween.js'
 import * as dat from 'dat.gui'
+import Home from './assets/Home'
+import About from './assets/About'
+import Products from './assets/Products'
 
 function Model({ position, rotation, scale }) {
     const { scene } = useGLTF('/scene.glb')
     const modelRef = useRef()
 
-    // Animate Y position on mount
     useEffect(() => {
         if (!modelRef.current) return
 
@@ -43,6 +45,7 @@ function Model({ position, rotation, scale }) {
 }
 
 function App() {
+    const [currentPage, setCurrentPage] = useState('home')
     const [lightPosition, setLightPosition] = useState([0, 0, 0])
     const lightRef = useRef()
 
@@ -83,8 +86,27 @@ function App() {
         return () => gui.destroy()
     }, [modelPosition, modelRotation, modelScale])
 
+    const renderPage = () => {
+        switch (currentPage) {
+            case 'home':
+                return <Home />
+            case 'about':
+                return <About />
+            case 'products':
+                return <Products />
+            default:
+                return null
+        }
+    }
+
     return (
         <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
+            <div className="nav-buttons">
+                <button className="nav-button" onClick={() => setCurrentPage('home')}>Home</button>
+                <button className="nav-button" onClick={() => setCurrentPage('about')}>About</button>
+                <button className="nav-button" onClick={() => setCurrentPage('products')}>Products</button>
+            </div>
+
             <Canvas
                 camera={{ position: [0, 0, 4] }}
                 style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
@@ -98,7 +120,8 @@ function App() {
                 <OrbitControls />
             </Canvas>
 
-            {/* Text Overlay */}
+            {renderPage()}
+
             <div
                 style={{
                     position: 'absolute',
