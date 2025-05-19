@@ -14,8 +14,10 @@ function Model({ position, rotation, scale }) {
 
     useEffect(() => {
         if (!modelRef.current) return
+
         const start = { y: -5 }
         const end = { y: position[1] }
+
         const tween = new Tween(start)
             .to(end, 2000)
             .easing(Easing.Quadratic.Out)
@@ -29,9 +31,11 @@ function Model({ position, rotation, scale }) {
 
     useFrame(() => {
         tweenUpdate()
+
         if (modelRef.current) {
             modelRef.current.position.x = position[0]
             modelRef.current.position.z = position[2]
+
             modelRef.current.rotation.set(...rotation)
             modelRef.current.scale.set(...scale)
         }
@@ -44,6 +48,7 @@ function App() {
     const [currentPage, setCurrentPage] = useState('home')
     const [lightPosition, setLightPosition] = useState([0, 0, 0])
     const lightRef = useRef()
+
     const [modelPosition, setModelPosition] = useState([0, 0, 0])
     const [modelRotation, setModelRotation] = useState([0, 0, 0])
     const [modelScale, setModelScale] = useState([1, 1, 1])
@@ -97,24 +102,9 @@ function App() {
     return (
         <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
             <div className="nav-buttons">
-                <button 
-                    className={`nav-button ${currentPage === 'home' ? 'active' : ''}`}
-                    onClick={() => setCurrentPage('home')}
-                >
-                    Home
-                </button>
-                <button 
-                    className={`nav-button ${currentPage === 'about' ? 'active' : ''}`}
-                    onClick={() => setCurrentPage('about')}
-                >
-                    About
-                </button>
-                <button 
-                    className={`nav-button ${currentPage === 'products' ? 'active' : ''}`}
-                    onClick={() => setCurrentPage('products')}
-                >
-                    Products
-                </button>
+                <button className="nav-button" onClick={() => setCurrentPage('home')}>Home</button>
+                <button className="nav-button" onClick={() => setCurrentPage('about')}>About</button>
+                <button className="nav-button" onClick={() => setCurrentPage('products')}>Products</button>
             </div>
 
             <Canvas
